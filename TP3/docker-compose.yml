@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # --- Base de données MongoDB ---
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # --- Cache Redis ---
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  # --- Bus de messages RabbitMQ ---
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
+  # --- Instance 1 de l'application ---
+  app1:
+    build: ./app
+    container_name: app1
+    environment:
+      PORT: 3001
+      INSTANCE: 'Instance-1'
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+
+  # --- Instance 2 de l'application ---
+  app2:
+    build: ./app
+    container_name: app2
+    environment:
+      PORT: 3002
+      INSTANCE: 'Instance-2'
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+
+  # --- Nginx Load Balancer ---
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app1
+      - app2
+
+volumes:
+  mongo_data:
