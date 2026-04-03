@@ -1,0 +1,6 @@
+com\soa\product\controller\ProductController.class
+com\soa\product\ProductServiceApplication.class
+com\soa\product\entity\Product$ProductBuilder.class
+com\soa\product\entity\Product.class
+com\soa\product\service\ProductService.class
+com\soa\product\repository\ProductRepository.class

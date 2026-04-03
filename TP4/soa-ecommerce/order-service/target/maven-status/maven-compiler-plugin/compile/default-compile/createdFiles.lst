@@ -1,0 +1,10 @@
+com\soa\order\dto\ProductDTO.class
+com\soa\order\repository\OrderRepository.class
+com\soa\order\controller\OrderController.class
+com\soa\order\exception\ErrorResponse.class
+com\soa\order\exception\GlobalExceptionHandler.class
+com\soa\order\client\ProductClient.class
+com\soa\order\service\OrderService.class
+com\soa\order\entity\Order.class
+com\soa\order\entity\Order$OrderBuilder.class
+com\soa\order\OrderServiceApplication.class
